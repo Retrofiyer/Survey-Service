@@ -48,7 +48,6 @@ The service integrates with other microservices to handle authentication, notifi
 
 [![Ruby][ruby.com]][ruby-url]
 [![SQLite][sqlite.com]][sqlite-url]
-[![Swagger][swagger.com]][swagger-url] 
 [![Docker][docker.com]][docker-url]
 
 <!-- GETTING STARTED -->
@@ -89,8 +88,6 @@ I would like you to contribute to this project. Whether it's fixing a bug, addin
 
 [docker.com]: https://img.shields.io/badge/Docker-black?style=for-the-badge&logo=docker&logoColor=white
 [docker-url]: https://www.docker.com/
-[swagger.com]: https://img.shields.io/badge/Swagger-black?style=for-the-badge&logo=swagger&logoColor=white
-[swagger-url]: https://swagger.io/
 [sqlite.com]: https://img.shields.io/badge/SQLite-black?style=for-the-badge&logo=sqlite&logoColor=white
 [sqlite-url]: https://www.sqlite.org/
 [ruby.com]: https://img.shields.io/badge/Ruby-black?style=for-the-badge&logo=ruby&logoColor=white
