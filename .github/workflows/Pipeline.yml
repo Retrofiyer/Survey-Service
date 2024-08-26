@@ -23,3 +23,44 @@ jobs:
         run: |
           docker build ./ -f Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/survey-service:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/survey-service:latest
+
+  create-docker-image:
+    name: Build Image
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Access Credential to AWS
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Login AWS ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Create, tag and send image to AWS ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: loginmicro
+        IMAGE_TAG: latest
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+  deploy:
+    name: Send Image to AWS ECS
+    runs-on: ubuntu-latest
+    needs: create-docker-image
+    steps:
+      - name: Configurar Credenciales de AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+ 
+      - name: Actualizar versión en ECS
+        run: |
+          aws ecs update-service --cluster MicroservicesWindows --service surveyservice --task-definition Survey-Sevice --force-new-deployment
