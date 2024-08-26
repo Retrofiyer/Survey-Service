@@ -24,7 +24,6 @@ jobs:
           docker build ./ -f Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/survey-service:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/survey-service:latest
 
-  create-docker-image:
     name: Build Image
     runs-on: ubuntu-latest
     steps:
